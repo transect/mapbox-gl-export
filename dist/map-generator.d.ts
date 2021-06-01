@@ -1,5 +1,4 @@
 import { Map as MapboxMap } from "mapbox-gl";
-import 'js-loading-overlay';
 export declare const Format: {
     readonly JPEG: "jpg";
     readonly PNG: "png";

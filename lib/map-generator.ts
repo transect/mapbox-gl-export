@@ -30,7 +30,6 @@
 import * as jsPDF from 'jspdf';
 import { saveAs } from 'file-saver';
 import { accessToken, Map as MapboxMap } from "mapbox-gl";
-import 'js-loading-overlay';
 import { fabric } from "fabric";
 
 
@@ -122,25 +121,6 @@ export default class MapGenerator{
   generate(){
     const this_ = this;
 
-    // see documentation for JS Loading Overray library
-    // https://js-loading-overlay.muhdfaiz.com
-    // @ts-ignore
-    JsLoadingOverlay.show({
-      "overlayBackgroundColor": "#5D5959",
-      "overlayOpacity": "0.6",
-      "spinnerIcon": "ball-spin",
-      "spinnerColor": "#2400FD",
-      "spinnerSize": "2x",
-      "overlayIDName": "overlay",
-      "spinnerIDName": "spinner",
-      "offsetX": 0,
-      "offsetY": 0,
-      "containerID": null,
-      "lockScroll": false,
-      "overlayZIndex": 9998,
-      "spinnerZIndex": 9999
-    });
-
     // Calculate pixel ratio
     var actualPixelRatio: number = window.devicePixelRatio;
     Object.defineProperty(window, 'devicePixelRatio', {
@@ -208,9 +188,6 @@ export default class MapGenerator{
     Object.defineProperty(window, 'devicePixelRatio', {
         get: function() {return actualPixelRatio}
     });
-
-    // @ts-ignore
-    JsLoadingOverlay.hide();
 
   });
 

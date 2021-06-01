@@ -4,7 +4,6 @@ exports.DPI = exports.PageOrientation = exports.Size = exports.Unit = exports.Fo
 const jsPDF = require("jspdf");
 const file_saver_1 = require("file-saver");
 const mapbox_gl_1 = require("mapbox-gl");
-require("js-loading-overlay");
 const fabric_1 = require("fabric");
 exports.Format = {
     JPEG: 'jpg',
@@ -50,21 +49,6 @@ class MapGenerator {
     }
     generate() {
         const this_ = this;
-        JsLoadingOverlay.show({
-            "overlayBackgroundColor": "#5D5959",
-            "overlayOpacity": "0.6",
-            "spinnerIcon": "ball-spin",
-            "spinnerColor": "#2400FD",
-            "spinnerSize": "2x",
-            "overlayIDName": "overlay",
-            "spinnerIDName": "spinner",
-            "offsetX": 0,
-            "offsetY": 0,
-            "containerID": null,
-            "lockScroll": false,
-            "overlayZIndex": 9998,
-            "spinnerZIndex": 9999
-        });
         var actualPixelRatio = window.devicePixelRatio;
         Object.defineProperty(window, 'devicePixelRatio', {
             get: function () { return this_.dpi / 96; }
@@ -125,7 +109,6 @@ class MapGenerator {
             Object.defineProperty(window, 'devicePixelRatio', {
                 get: function () { return actualPixelRatio; }
             });
-            JsLoadingOverlay.hide();
         });
     }
     toPNG(canvas, fileName) {

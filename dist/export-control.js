@@ -62,6 +62,7 @@ class MapboxExportControl {
         generateButton.textContent = 'Generate';
         generateButton.classList.add('generate-button');
         generateButton.addEventListener("click", () => {
+            this.exportContainer.style.display = "none";
             const pageSize = document.getElementById(`mapbox-gl-export-page-size`);
             const pageOrientation = document.getElementById(`mapbox-gl-export-page-orientaiton`);
             const formatType = document.getElementById(`mapbox-gl-export-format-type`);
