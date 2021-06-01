@@ -53,8 +53,11 @@ export default class MapboxExportControl implements IControl
         this.exportButton.classList.add("mapboxgl-ctrl-icon");
         this.exportButton.classList.add("mapboxgl-export-control");
         this.exportButton.addEventListener("click", () => {
-          this.exportButton.style.display = "none";
-          this.exportContainer.style.display = "block";
+          if (this.exportContainer.style.display === "block") {
+            this.exportContainer.style.display = "none";
+          } else {
+            this.exportContainer.style.display = "block";
+          }
         });
         document.addEventListener("click", this.onDocumentClick);
         this.controlContainer.appendChild(this.exportButton);
