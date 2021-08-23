@@ -49,5 +49,8 @@
     "js-loading-overlay": "^1.2.0",
     "jspdf": "^1.5.3",
     "mapbox-gl": "^2.0.1"
+  },
+  "resolutions": {
+    "jspdf/file-saver": "github:eligrey/FileSaver.js#e865e37af9f9947ddcced76b549e27dc45c1cb2e"
   }
 }
