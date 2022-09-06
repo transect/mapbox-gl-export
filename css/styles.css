@@ -5,7 +5,8 @@
     width: 196px;
     background: white;
     top: 0;
-    left: 40px;
+    right: 40px;
+    position: absolute;
 }
 
 .mapboxgl-ctrl-group .mapboxgl-export-list button
