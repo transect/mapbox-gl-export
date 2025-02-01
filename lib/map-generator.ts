@@ -47,7 +47,7 @@ export const Unit = {
 } as const;
 export type Unit = (typeof Unit)[keyof typeof Unit];
 
-export const Size = {
+export const Size: Record<SizeKeys, [number, number]> = {
   // A0, A1, B0, B1 are not working well.
   // A0: [1189, 841],
   // A1: [841, 594],
@@ -63,16 +63,36 @@ export const Size = {
   B4: [353, 250],
   B5: [250, 176],
   B6: [176, 125],
-} as const;
-export type Size = (typeof Size)[keyof typeof Size];
+};
 
-export const PageOrientation = {
+export enum SizeKeys {
+  A2 = "A2",
+  A3 = "A3",
+  A4 = "A4",
+  A5 = "A5",
+  A6 = "A6",
+  B2 = "B2",
+  B3 = "B3",
+  B4 = "B4",
+  B5 = "B5",
+  B6 = "B6",
+}
+export type Size = Record<SizeKeys, [number, number]>;
+
+export const PageOrientation: PageOrientation = {
   Landscape: "landscape",
   Portrait: "portrait",
-} as const;
+};
 
-export type PageOrientation =
-  (typeof PageOrientation)[keyof typeof PageOrientation];
+export enum PageOrientationKeys {
+  Landscape = "Landscape",
+  Portrait = "Portrait",
+}
+
+export type PageOrientation = Record<
+  PageOrientationKeys,
+  "landscape" | "portrait"
+>;
 
 export const DPI = {
   "72": 72,
@@ -80,8 +100,9 @@ export const DPI = {
   "200": 200,
   "300": 300,
   "400": 400,
-} as const;
-export type DPI = (typeof DPI)[keyof typeof DPI];
+};
+
+export type DPI = Record<string, number>;
 
 export default class MapGenerator {
   private map: MapboxMap;
@@ -101,7 +122,7 @@ export default class MapGenerator {
    */
   constructor(
     map: MapboxMap,
-    size: Size = Size.A4,
+    size = Size.A4,
     dpi: number = 300,
     format: string = Format.PNG.toString(),
     unit: Unit = Unit.mm

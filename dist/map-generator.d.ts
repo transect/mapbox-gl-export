@@ -11,32 +11,34 @@ export declare const Unit: {
     readonly mm: "mm";
 };
 export declare type Unit = (typeof Unit)[keyof typeof Unit];
-export declare const Size: {
-    readonly A2: readonly [594, 420];
-    readonly A3: readonly [420, 297];
-    readonly A4: readonly [297, 210];
-    readonly A5: readonly [210, 148];
-    readonly A6: readonly [148, 105];
-    readonly B2: readonly [707, 500];
-    readonly B3: readonly [500, 353];
-    readonly B4: readonly [353, 250];
-    readonly B5: readonly [250, 176];
-    readonly B6: readonly [176, 125];
-};
-export declare type Size = (typeof Size)[keyof typeof Size];
-export declare const PageOrientation: {
-    readonly Landscape: "landscape";
-    readonly Portrait: "portrait";
-};
-export declare type PageOrientation = (typeof PageOrientation)[keyof typeof PageOrientation];
+export declare const Size: Record<SizeKeys, [number, number]>;
+export declare enum SizeKeys {
+    A2 = "A2",
+    A3 = "A3",
+    A4 = "A4",
+    A5 = "A5",
+    A6 = "A6",
+    B2 = "B2",
+    B3 = "B3",
+    B4 = "B4",
+    B5 = "B5",
+    B6 = "B6"
+}
+export declare type Size = Record<SizeKeys, [number, number]>;
+export declare const PageOrientation: PageOrientation;
+export declare enum PageOrientationKeys {
+    Landscape = "Landscape",
+    Portrait = "Portrait"
+}
+export declare type PageOrientation = Record<PageOrientationKeys, "landscape" | "portrait">;
 export declare const DPI: {
-    readonly "72": 72;
-    readonly "96": 96;
-    readonly "200": 200;
-    readonly "300": 300;
-    readonly "400": 400;
+    "72": number;
+    "96": number;
+    "200": number;
+    "300": number;
+    "400": number;
 };
-export declare type DPI = (typeof DPI)[keyof typeof DPI];
+export declare type DPI = Record<string, number>;
 export default class MapGenerator {
     private map;
     private width;
@@ -44,7 +46,7 @@ export default class MapGenerator {
     private dpi;
     private format;
     private unit;
-    constructor(map: MapboxMap, size?: Size, dpi?: number, format?: string, unit?: Unit);
+    constructor(map: MapboxMap, size?: [number, number], dpi?: number, format?: string, unit?: Unit);
     generate(): void;
     private toPNG;
     private toJPEG;

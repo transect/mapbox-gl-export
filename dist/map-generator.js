@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DPI = exports.PageOrientation = exports.Size = exports.Unit = exports.Format = void 0;
+exports.DPI = exports.PageOrientationKeys = exports.PageOrientation = exports.SizeKeys = exports.Size = exports.Unit = exports.Format = void 0;
 const jsPDF = require("jspdf");
 const file_saver_1 = require("file-saver");
 const mapbox_gl_1 = require("mapbox-gl");
@@ -27,10 +27,28 @@ exports.Size = {
     B5: [250, 176],
     B6: [176, 125],
 };
+var SizeKeys;
+(function (SizeKeys) {
+    SizeKeys["A2"] = "A2";
+    SizeKeys["A3"] = "A3";
+    SizeKeys["A4"] = "A4";
+    SizeKeys["A5"] = "A5";
+    SizeKeys["A6"] = "A6";
+    SizeKeys["B2"] = "B2";
+    SizeKeys["B3"] = "B3";
+    SizeKeys["B4"] = "B4";
+    SizeKeys["B5"] = "B5";
+    SizeKeys["B6"] = "B6";
+})(SizeKeys = exports.SizeKeys || (exports.SizeKeys = {}));
 exports.PageOrientation = {
     Landscape: "landscape",
     Portrait: "portrait",
 };
+var PageOrientationKeys;
+(function (PageOrientationKeys) {
+    PageOrientationKeys["Landscape"] = "Landscape";
+    PageOrientationKeys["Portrait"] = "Portrait";
+})(PageOrientationKeys = exports.PageOrientationKeys || (exports.PageOrientationKeys = {}));
 exports.DPI = {
     "72": 72,
     "96": 96,
