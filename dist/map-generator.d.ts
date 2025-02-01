@@ -9,7 +9,7 @@ export declare const Unit: {
     readonly in: "in";
     readonly mm: "mm";
 };
-declare type Unit = typeof Unit[keyof typeof Unit];
+export declare type Unit = (typeof Unit)[keyof typeof Unit];
 export declare const Size: {
     readonly A2: readonly [594, 420];
     readonly A3: readonly [420, 297];
@@ -22,18 +22,20 @@ export declare const Size: {
     readonly B5: readonly [250, 176];
     readonly B6: readonly [176, 125];
 };
-declare type Size = typeof Size[keyof typeof Size];
+export declare type Size = (typeof Size)[keyof typeof Size];
 export declare const PageOrientation: {
     readonly Landscape: "landscape";
     readonly Portrait: "portrait";
 };
+export declare type PageOrientation = (typeof PageOrientation)[keyof typeof PageOrientation];
 export declare const DPI: {
-    readonly 72: 72;
-    readonly 96: 96;
-    readonly 200: 200;
-    readonly 300: 300;
-    readonly 400: 400;
+    readonly "72": 72;
+    readonly "96": 96;
+    readonly "200": 200;
+    readonly "300": 300;
+    readonly "400": 400;
 };
+export declare type DPI = (typeof DPI)[keyof typeof DPI];
 export default class MapGenerator {
     private map;
     private width;
@@ -50,4 +52,3 @@ export default class MapGenerator {
     private toPixels;
     private toBlob;
 }
-export {};
