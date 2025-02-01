@@ -5,6 +5,7 @@ export declare const Format: {
     readonly PDF: "pdf";
     readonly SVG: "svg";
 };
+export declare type Format = (typeof Format)[keyof typeof Format];
 export declare const Unit: {
     readonly in: "in";
     readonly mm: "mm";

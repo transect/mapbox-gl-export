@@ -38,7 +38,7 @@ export const Format = {
   PDF: "pdf",
   SVG: "svg",
 } as const;
-type Format = (typeof Format)[keyof typeof Format];
+export type Format = (typeof Format)[keyof typeof Format];
 
 export const Unit = {
   // don't use inch unit. because page size setting is using mm unit.
