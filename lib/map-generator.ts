@@ -1,9 +1,9 @@
 /*
  * mpetroff/print-maps
  * https://github.com/mpetroff/print-maps
- * 
+ *
  * I used the source code from the above repository. Thanks so much!
- * 
+ *
  * -----LICENSE------
  * Print Maps - High-resolution maps in the browser, for printing
  * Copyright (c) 2015-2020 Matthew Petroff
@@ -27,26 +27,25 @@
  * THE SOFTWARE.
  */
 
-import * as jsPDF from 'jspdf';
-import { saveAs } from 'file-saver';
+import * as jsPDF from "jspdf";
+import { saveAs } from "file-saver";
 import { accessToken, Map as MapboxMap } from "mapbox-gl";
 import { fabric } from "fabric";
 
-
 export const Format = {
-  JPEG: 'jpg',
-  PNG: 'png',
-  PDF: 'pdf',
-  SVG: 'svg',
+  JPEG: "jpg",
+  PNG: "png",
+  PDF: "pdf",
+  SVG: "svg",
 } as const;
-type Format = typeof Format[keyof typeof Format];
+type Format = (typeof Format)[keyof typeof Format];
 
 export const Unit = {
   // don't use inch unit. because page size setting is using mm unit.
-  in: 'in',
-  mm: 'mm',
+  in: "in",
+  mm: "mm",
 } as const;
-type Unit = typeof Unit[keyof typeof Unit];
+export type Unit = (typeof Unit)[keyof typeof Unit];
 
 export const Size = {
   // A0, A1, B0, B1 are not working well.
@@ -64,27 +63,27 @@ export const Size = {
   B4: [353, 250],
   B5: [250, 176],
   B6: [176, 125],
-
 } as const;
-type Size = typeof Size[keyof typeof Size];
+export type Size = (typeof Size)[keyof typeof Size];
 
 export const PageOrientation = {
-  Landscape: 'landscape',
-  Portrait: 'portrait',
+  Landscape: "landscape",
+  Portrait: "portrait",
 } as const;
-type PageOrientation = typeof PageOrientation[keyof typeof PageOrientation];
+
+export type PageOrientation =
+  (typeof PageOrientation)[keyof typeof PageOrientation];
 
 export const DPI = {
-  '72': 72,
-  '96': 96,
-  '200': 200,
-  '300': 300,
-  '400': 400,
+  "72": 72,
+  "96": 96,
+  "200": 200,
+  "300": 300,
+  "400": 400,
 } as const;
-type DPI = typeof DPI[keyof typeof DPI];
+export type DPI = (typeof DPI)[keyof typeof DPI];
 
-export default class MapGenerator{
-
+export default class MapGenerator {
   private map: MapboxMap;
   private width: number;
   private height: number;
@@ -101,12 +100,12 @@ export default class MapGenerator{
    * @param unit length unit. default is mm
    */
   constructor(
-    map:MapboxMap, 
-    size: Size = Size.A4, 
-    dpi: number=300, 
-    format:string=Format.PNG.toString(), 
-    unit: Unit=Unit.mm,
-  ){
+    map: MapboxMap,
+    size: Size = Size.A4,
+    dpi: number = 300,
+    format: string = Format.PNG.toString(),
+    unit: Unit = Unit.mm
+  ) {
     this.map = map;
     this.width = size[0];
     this.height = size[1];
@@ -118,19 +117,21 @@ export default class MapGenerator{
   /**
    * Generate and download Map image
    */
-  generate(){
+  generate() {
     const this_ = this;
 
     // Calculate pixel ratio
     var actualPixelRatio: number = window.devicePixelRatio;
-    Object.defineProperty(window, 'devicePixelRatio', {
-        get: function() {return this_.dpi / 96}
+    Object.defineProperty(window, "devicePixelRatio", {
+      get: function () {
+        return this_.dpi / 96;
+      },
     });
     // Create map container
-    var hidden = document.createElement('div');
-    hidden.className = 'hidden-map';
+    var hidden = document.createElement("div");
+    hidden.className = "hidden-map";
     document.body.appendChild(hidden);
-    var container = document.createElement('div');
+    var container = document.createElement("div");
     container.style.width = this.toPixels(this.width);
     container.style.height = this.toPixels(this.height);
     hidden.appendChild(container);
@@ -147,50 +148,50 @@ export default class MapGenerator{
       preserveDrawingBuffer: true,
       fadeDuration: 0,
       attributionControl: false,
-      transformRequest: (this.map as any)._requestManager._transformRequestFn // hack to read transfrom request callback function
-  });
-  let style = this.map.getStyle();
-  for (let name in style.sources){
-    let src = style.sources[name];
-    Object.keys(src).forEach(key=>{
-      //delete properties if value is undefined.
-      // for instance, raster-dem might has undefined value in "url" and "bounds"
-      if (!src[key]){
-        delete src[key];
-      }
-    })
-  }
-  renderMap.setStyle(style)
-
-  renderMap.once('idle', function() {
-    const canvas = renderMap.getCanvas();
-    const fileName = `map.${this_.format}`;
-    switch (this_.format){
-      case Format.PNG:
-        this_.toPNG(canvas, fileName);
-        break;
-      case Format.JPEG:
-        this_.toJPEG(canvas, fileName);
-        break;
-      case Format.PDF:
-        this_.toPDF(renderMap, fileName);
-        break;
-      case Format.SVG:
-        this_.toSVG(canvas, fileName);
-        break;
-      default:
-        alert(`Invalid file format: ${this_.format}`);
-        break;
-    }
-
-    renderMap.remove();
-    hidden.parentNode?.removeChild(hidden);
-    Object.defineProperty(window, 'devicePixelRatio', {
-        get: function() {return actualPixelRatio}
+      transformRequest: (this.map as any)._requestManager._transformRequestFn, // hack to read transfrom request callback function
     });
+    let style = this.map.getStyle();
+    for (let name in style.sources) {
+      let src = style.sources[name];
+      Object.keys(src).forEach((key) => {
+        //delete properties if value is undefined.
+        // for instance, raster-dem might has undefined value in "url" and "bounds"
+        if (!src[key]) {
+          delete src[key];
+        }
+      });
+    }
+    renderMap.setStyle(style);
 
-  });
+    renderMap.once("idle", function () {
+      const canvas = renderMap.getCanvas();
+      const fileName = `map.${this_.format}`;
+      switch (this_.format) {
+        case Format.PNG:
+          this_.toPNG(canvas, fileName);
+          break;
+        case Format.JPEG:
+          this_.toJPEG(canvas, fileName);
+          break;
+        case Format.PDF:
+          this_.toPDF(renderMap, fileName);
+          break;
+        case Format.SVG:
+          this_.toSVG(canvas, fileName);
+          break;
+        default:
+          alert(`Invalid file format: ${this_.format}`);
+          break;
+      }
 
+      renderMap.remove();
+      hidden.parentNode?.removeChild(hidden);
+      Object.defineProperty(window, "devicePixelRatio", {
+        get: function () {
+          return actualPixelRatio;
+        },
+      });
+    });
   }
 
   /**
@@ -198,9 +199,8 @@ export default class MapGenerator{
    * @param canvas Canvas element
    * @param fileName file name
    */
-  private toPNG(canvas: HTMLCanvasElement, fileName: string)
-  {
-    canvas.toBlob(function(blob) {
+  private toPNG(canvas: HTMLCanvasElement, fileName: string) {
+    canvas.toBlob(function (blob) {
       saveAs(blob, fileName);
     });
   }
@@ -210,17 +210,16 @@ export default class MapGenerator{
    * @param canvas Canvas element
    * @param fileName file name
    */
-  private toJPEG(canvas: HTMLCanvasElement, fileName: string)
-  {
-    const uri = canvas.toDataURL('image/jpeg', 0.85);
+  private toJPEG(canvas: HTMLCanvasElement, fileName: string) {
+    const uri = canvas.toDataURL("image/jpeg", 0.85);
     // @ts-ignore
-    if (canvas.msToBlob) { 
+    if (canvas.msToBlob) {
       //for IE11
       var blob = this.toBlob(uri);
       window.navigator.msSaveBlob(blob, fileName);
-    }else{
+    } else {
       //for other browsers except IE11
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = uri;
       a.download = fileName;
       a.click();
@@ -233,24 +232,32 @@ export default class MapGenerator{
    * @param map mapboxgl.Map object
    * @param fileName file name
    */
-  private toPDF(map: mapboxgl.Map, fileName: string)
-  {
+  private toPDF(map: mapboxgl.Map, fileName: string) {
     const canvas = map.getCanvas();
     var pdf = new jsPDF({
-      orientation: this.width > this.height ? 'l' : 'p',
+      orientation: this.width > this.height ? "l" : "p",
       unit: this.unit,
-      compress: true
+      compress: true,
     });
 
-    pdf.addImage(canvas.toDataURL('image/png'),'png', 0, 0, this.width, this.height, null, 'FAST');
+    pdf.addImage(
+      canvas.toDataURL("image/png"),
+      "png",
+      0,
+      0,
+      this.width,
+      this.height,
+      null,
+      "FAST"
+    );
 
-    var {lng, lat} = map.getCenter();
+    var { lng, lat } = map.getCenter();
     pdf.setProperties({
       title: map.getStyle().name,
       subject: `center: [${lng}, ${lat}], zoom: ${map.getZoom()}`,
-      creator: 'Mapbox GL Export Plugin',
-      author: '(c)Mapbox, (c)OpenStreetMap'
-    })
+      creator: "Mapbox GL Export Plugin",
+      author: "(c)Mapbox, (c)OpenStreetMap",
+    });
 
     pdf.save(fileName);
   }
@@ -263,61 +270,63 @@ export default class MapGenerator{
    * @param canvas Canvas element
    * @param fileName file name
    */
-  private toSVG(canvas: HTMLCanvasElement, fileName: string)
-  {
-    const uri = canvas.toDataURL('image/png');
-    fabric.Image.fromURL(uri, (image)=>{
-      const canvas = new fabric.Canvas('canvas');
-      const px_width = Number(this.toPixels(this.width, this.dpi).replace("px", ""));
-      const px_height = Number(this.toPixels(this.height, this.dpi).replace("px", ""));
+  private toSVG(canvas: HTMLCanvasElement, fileName: string) {
+    const uri = canvas.toDataURL("image/png");
+    fabric.Image.fromURL(uri, (image) => {
+      const canvas = new fabric.Canvas("canvas");
+      const px_width = Number(
+        this.toPixels(this.width, this.dpi).replace("px", "")
+      );
+      const px_height = Number(
+        this.toPixels(this.height, this.dpi).replace("px", "")
+      );
       image.scaleToWidth(px_width);
       image.scaleToHeight(px_height);
-      
+
       canvas.add(image);
       const svg = canvas.toSVG({
-        x:0,
-        y:0,
+        x: 0,
+        y: 0,
         width: px_width,
         height: px_height,
         viewBox: {
-          x:0,
-          y:0,
+          x: 0,
+          y: 0,
           width: px_width,
           height: px_height,
         },
       });
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = "data:application/xml," + encodeURIComponent(svg);
       a.download = fileName;
       a.click();
       a.remove();
-    })
+    });
   }
 
   /**
    * Convert mm/inch to pixel
    * @param length mm/inch length
-   * @param conversionFactor DPI value. default is 96. 
+   * @param conversionFactor DPI value. default is 96.
    */
-  private toPixels(length:number, conversionFactor=96){
+  private toPixels(length: number, conversionFactor = 96) {
     if (this.unit == Unit.mm) {
-        conversionFactor /= 25.4;
+      conversionFactor /= 25.4;
     }
-    return conversionFactor * length + 'px';
+    return conversionFactor * length + "px";
   }
 
   /**
    * Convert base64 to Blob
    * @param base64 string value for base64
    */
-  private toBlob(base64: string): Blob{
-    const bin = atob(base64.replace(/^.*,/, ''));
+  private toBlob(base64: string): Blob {
+    const bin = atob(base64.replace(/^.*,/, ""));
     let buffer = new Uint8Array(bin.length);
     for (var i = 0; i < bin.length; i++) {
       buffer[i] = bin.charCodeAt(i);
     }
-    const blob = new Blob([buffer.buffer], {type: 'image/png'});
+    const blob = new Blob([buffer.buffer], { type: "image/png" });
     return blob;
   }
-
 }
